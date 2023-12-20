@@ -1,67 +1,3 @@
-
-class secureLogs {
-    #spawnLogs;
-    #verifiedLogs;
-    #logsTimer;
-    constructor() {
-        this.#spawnLogs = [];
-        this.#verifiedLogs = [];
-        this.#logsTimer = null;
-    }
-    createLog(r, c, intended, obj, luck) {
-        if (obj.stack.includes("main.js") && luck < 12) {
-            if (mine[r][c] == "⬜") {
-                this.#spawnLogs.push([r, c, intended]);
-            }
-        } 
-    }
-    verifyLog(r, c) {
-        for (let i = 0; i < this.#spawnLogs.length; i++) {
-            if (this.#spawnLogs[i][0] == r && this.#spawnLogs[i][1] == c) {
-                if (mine[r][c] == this.#spawnLogs[i][2]) {
-                    this.#spawnLogs.splice(i, 1);
-                    this.#verifiedLogs.push([mine[r][c], [r, c], new Date(), false, "Normal"]);
-                    break;
-                }
-            }
-        }
-        
-    }
-    verifyFind(block, r, c, variant) {
-        for (let i = 0; i < this.#verifiedLogs.length; i++) {
-            if (this.#verifiedLogs[i][1][0] == r && this.#verifiedLogs[i][1][1] == c) {
-                if (block == this.#verifiedLogs[i][0]) {
-                    this.#verifiedLogs[i][3] = true;
-                    this.#verifiedLogs[i][4] = variant;
-                    break;
-                }
-            }
-        }
-    }
-    showLogs() {
-        if (document.getElementById("dataExport").style.display == "block") {
-                clearInterval(this.#logsTimer);
-                this.#logsTimer = null;
-                let element = document.createElement("p");
-                element.id = "generatedLogs";
-                document.getElementById("logHolder").appendChild(element);
-                let output = "";
-                for (let i = 0; i < this.#verifiedLogs.length; i++) {
-                    output += this.#verifiedLogs[i][0] + this.#verifiedLogs[i][2] + this.#verifiedLogs[i][3] + ", " + this.#verifiedLogs[i][4] +"<br>";
-                }
-                this.#logsTimer = setInterval(this.#reloadLogs, 50, output);
-        } else {
-            clearInterval(this.#logsTimer);
-            this.#logsTimer = null;
-            document.getElementById("generatedLogs").remove();
-        }
-        
-    }
-    #reloadLogs(output) {
-        document.getElementById("generatedLogs").innerHTML = output;
-    }
-
-}
 let mine = [];
 let curX = 1000000000;
 let curY = 0;
@@ -1297,4 +1233,5 @@ function toggleMusic() {
     }
 }
 
-
+let moveTimes = new antiCheat();
+let verifiedOres = new secureLogs();
